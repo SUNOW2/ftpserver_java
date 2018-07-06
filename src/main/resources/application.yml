@@ -1,0 +1,45 @@
+# 全局变量
+server:
+  ip: 192.168.1.100
+  mysql: 127.0.0.1
+
+# 日志配置
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com:
+      software: INFO
+
+# multiPartFile文件大小限制，数据库配置
+spring:
+  servlet:
+    multipart:
+      maxRequestSize: 100Mb
+      maxFileSize: 100Mb
+  datasource:
+    url: jdbc:mysql://${server.mysql}:3306/ftpServer?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
+    username: root
+    password: 12345678
+    driverClassName: com.mysql.jdbc.Driver
+
+# ftp服务器配置
+ftp:
+  address: ${server.ip}
+  port: 21
+  username: admin
+  password: admin
+  basePath: /home/sunow2/ftp/
+  downloadIp: ${server.ip}:80/
+
+# FineUploader文件存储位置配置
+breakpoint:
+  upload:
+    dirone: /Users/sunow/Desktop/one/
+    dirtwo:
+      tmp: /Users/sunow/Desktop/one/tmp/
+      fin: /Users/sunow/Desktop/one/fin/
+
+# mybatis配置
+mybatis:
+  typeAliasesPackage: com.example.demo.domain
+  mapperLocations: classpath:mapper/*.xml

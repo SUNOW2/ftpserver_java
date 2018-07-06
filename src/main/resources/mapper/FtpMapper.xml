@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.demo.dao.FtpMapper">
+    <resultMap id="FtpPo" type="com.example.demo.domain.FtpPo">
+        <result column="ftp_no" property="ftpNo" jdbcType="VARCHAR" />
+        <result column="original_file" property="originalFile" jdbcType="VARCHAR" />
+        <result column="ftp_date" property="ftpDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="fieldSql">
+        f.ftp_no
+        ,f.original_file
+    </sql>
+
+    <sql id="whereSql">
+        <if test="ftpNo != null and ftpNo != ''">
+            f.ftp_no = #{ftpNo,jdbcType = VARCHAR}
+        </if>
+    </sql>
+
+    <!--新增文件记录 useGeneratedKeys="true" keyProperty="id" keyColumn="id" -->
+    <insert id="addFtp" parameterType="com.example.demo.domain.FtpPo">
+        INSERT INTO ftp_file (
+        <if test="ftpNo != null and ftpNo != ''">
+            ftp_no
+        </if>
+        <if test="originalFile != null and originalFile != ''">
+            ,original_file
+        </if>
+        <if test="ftpDate != null">
+            ,ftp_date
+        </if>
+        ) VALUES (
+        <if test="ftpNo != null and ftpNo != ''">
+            #{ftpNo, jdbcType = VARCHAR}
+        </if>
+        <if test="originalFile != null and originalFile != ''">
+            ,#{originalFile, jdbcType = VARCHAR}
+        </if>
+        <if test="ftpDate != null">
+            ,#{ftpDate, jdbcType = TIMESTAMP}
+        </if>
+        )
+    </insert>
+
+    <!--创建文件主键-->
+    <select id="createFtpNo" resultType="java.lang.String">
+        SELECT concat('F',date_format(now(), '%y%m%d%i'), substring(MD5(RAND()),1,6)) from dual
+    </select>
+
+</mapper>
